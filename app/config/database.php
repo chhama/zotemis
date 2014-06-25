@@ -57,7 +57,7 @@ return array(
 			'host'      => 'localhost',
 			'database'  => 'zote_db',
 			'username'  => 'root',
-			'password'  => 'zakth3ild0',
+			'password'  => '',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',
