@@ -40,7 +40,6 @@ class ProductsController extends \BaseController {
 		$branch->agent_rate	= Input::get('agent_rate');
 		$branch->save();
 
-		$products = Products::orderBy('prod_name','asc')->paginate();
 		return Redirect::route('products.index');
 
 	}
@@ -92,10 +91,7 @@ class ProductsController extends \BaseController {
 
 		$productsById = Products::find($id);
 		$products = Products::orderBy('prod_name','asc')->paginate();
-		return View::make('products.edit')->with(array(
-						'products' => $products,
-						'productsById' => $productsById
-					));
+		return Redirect::route('products.edit',array($id));
 
 	}
 

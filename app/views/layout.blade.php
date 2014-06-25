@@ -19,7 +19,7 @@
     		<ul class="nav navbar-nav">
           <li <?php  $exp = explode('/',Request::path()); if($exp[0] == 'branches'){ echo "class='active'"; } ?>><a href="{{ URL::route('branches.index')}}">Branches</a></li>
           <li <?php  $exp = explode('/',Request::path()); if($exp[0] == 'products' || $exp[0] == 'products'){ echo "class='active'"; } ?>><a href="{{ URL::route('products.index')}}">Items</a></li>
-          <li <?php  $exp = explode('/',Request::path()); if($exp[0] == 'sales' || $exp[0] == 'sales'){ echo "class='active'"; } ?>><a href="{{ URL::route('sales.create')}}">Daily Sales</a></li>
+          <li <?php  $exp = explode('/',Request::path()); if($exp[0] == 'sales' || $exp[0] == 'sales'){ echo "class='active'"; } ?>><a href="{{ URL::route('sales.index')}}">Daily Sales</a></li>
     		</ul>
     	</div>
     </div>

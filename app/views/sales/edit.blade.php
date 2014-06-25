@@ -19,12 +19,12 @@
 </script>
 
 <div class="col-md-12">
- {{ Form::open(array('url'=>route('sales.store'),'method'=>'post','class'=>'form-horizontal')) }}
+ {{ Form::open(array('url'=>route('sales.update',$sales_date),'method'=>'put','class'=>'form-horizontal')) }}
 <div class="panel panel-default">
 <div class="panel-heading">
   <div class="rows">
-    <h5><strong>DAILY SALES</strong><span class="pull-right"><input type='date' name='sales_date' class="form-control" style="width:200px" value='<?=date("Y-m-d")?>' required ></span></h5>
-    
+    <h5><strong>DAILY SALES</strong></h5>
+    <input type='date' name='sales_date' class="form-control" style="width:200px" value='<?=$sales_date?>' required >
   </div>
 </div> 
 <div class="panel-body" style="padding:0px;">
@@ -49,34 +49,30 @@
  	<?php $slno = 1; ?>
  	@foreach($products as $product)
   <?php
-    $sales = Sales::where('sales_date','<',date('Y-m-d'))
-                    ->where('products_id','=',$product->id)
-                    ->where('branches_id','=',1)
-                    ->orderBy('sales_date','desc')->first();
-    $balance = (($sales['ob'] + $sales['received']) - $sales['return']) - $sales['sold'];
-    $ob = $balance;
-    
+    $balance = (($product->ob + $product->received) - $product->return) - $product->sold;
+    $prodsales = Products::find($product->products_id);
+    $total_value = $product->sold * $prodsales->prod_rate;
   ?>
   <tr bgcolor="">
     <td align="center" class="action text-center">{{$slno}}</td>
-    <td align="left">{{ $product->prod_name }} {{ Form::hidden('products_id[]',$product->id) }}</td>
-    <td align="left" bgcolor="">{{ Form::text('prod_rate[]', $product->prod_rate ,array('class'=>'form-control input-sm prodrate','readonly')) }}</td>
-    <td align="left" class="action text-center">{{ Form::text('ob[]',$ob,array('class'=>'form-control input-sm ob','onkeyup'=>"runme();")) }}</td>
-    <td align="left" class="action text-center">{{ Form::text('issued[]',null,array('class'=>'form-control input-sm issued')) }}</td>
-    <td align="left" class="action text-center">{{ Form::text('received[]',null,array('class'=>'form-control input-sm received','onkeyup'=>"runme();")) }}</td>
-    <td align="left" class="action text-center">{{ Form::text('trans[]',null,array('class'=>'form-control input-sm')) }}</td>
-    <td align="left" class="action text-center">{{ Form::text('return[]',null,array('class'=>'form-control input-sm returnqty','onkeyup'=>"runme();")) }}</td>
-    <td align="left" class="action text-center">{{ Form::text('sold[]',null,array('class'=>'form-control input-sm sold','onkeyup'=>"runme();")) }}</td>
-    <td align="left" class="action text-center">{{ Form::text('balance[]',null,array('class'=>'form-control input-sm balance','readonly')) }}</td>
-    <td align="left" class="action text-center">{{ Form::text('total_value[]',null,array('class'=>'form-control input-sm totalValue')) }}</td>
-    <td align="left" class="action text-center">{{ Form::text('demand[]',null,array('class'=>'form-control input-sm')) }}</td>
+    <td align="left">{{ $prodsales->prod_name }} {{ Form::hidden('sales_id[]',$product->id) }} {{ Form::hidden('products_id[]',$product->products_id) }}</td>
+    <td align="left" bgcolor="">{{ Form::text('prod_rate[]', $prodsales->prod_rate ,array('class'=>'form-control input-sm prodrate','readonly')) }}</td>
+    <td align="left" class="action text-center">{{ Form::text('ob[]',$product->ob,array('class'=>'form-control input-sm ob','onkeyup'=>"runme();")) }}</td>
+    <td align="left" class="action text-center">{{ Form::text('issued[]',$product->issued,array('class'=>'form-control input-sm issued')) }}</td>
+    <td align="left" class="action text-center">{{ Form::text('received[]',$product->received,array('class'=>'form-control input-sm received','onkeyup'=>"runme();")) }}</td>
+    <td align="left" class="action text-center">{{ Form::text('trans[]',$product->trans,array('class'=>'form-control input-sm')) }}</td>
+    <td align="left" class="action text-center">{{ Form::text('return[]',$product->return,array('class'=>'form-control input-sm returnqty','onkeyup'=>"runme();")) }}</td>
+    <td align="left" class="action text-center">{{ Form::text('sold[]',$product->sold,array('class'=>'form-control input-sm sold','onkeyup'=>"runme();")) }}</td>
+    <td align="left" class="action text-center">{{ Form::text('balance[]',$balance,array('class'=>'form-control input-sm balance','readonly')) }}</td>
+    <td align="left" class="action text-center">{{ Form::text('total_value[]',$total_value,array('class'=>'form-control input-sm totalValue')) }}</td>
+    <td align="left" class="action text-center">{{ Form::text('demand[]',$product->demand,array('class'=>'form-control input-sm')) }}</td>
    </tr>
-   <?php $slno++; ?>
+   <?php $slno++;?>
    @endforeach
 </tbody>
 <tfoot>
 <tr>
-	<td colspan="12"><span class="pull-right"><input type="submit" name="save" value="SAVE" class="btn btn-success"></span></td>
+	<td colspan="12"><span class="pull-right"><input type="submit" name="save" value="UPDATE" class="btn btn-success"></span></td>
 </tr>
 <tr>
   <td colspan="12">{{ $products->links() }}</td>

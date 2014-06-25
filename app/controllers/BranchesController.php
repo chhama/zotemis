@@ -40,9 +40,7 @@ class BranchesController extends \BaseController {
 		$branch->save();
 
 		$branches = Branches::orderBy('branch_name','asc')->paginate();
-		return View::make('branches.index')->with(array(
-						'branches' => $branches
-					));
+		return Redirect::route('branches.index');
 
 	}
 
@@ -92,10 +90,7 @@ class BranchesController extends \BaseController {
 
 		$branchesById = Branches::find($id);
 		$branches = Branches::orderBy('branch_name','asc')->paginate();
-		return View::make('branches.edit')->with(array(
-						'branches' => $branches,
-						'branchesById' => $branchesById
-					));
+		return Redirect::route('branches.edit',array($id));
 
 	}
 
@@ -111,9 +106,7 @@ class BranchesController extends \BaseController {
 		Branches::destroy($id);
 
 		$branches = Branches::orderBy('branch_name','asc')->paginate();
-		return View::make('branches.index')->with(array(
-						'branches' => $branches
-					));
+		return Redirect::route('branches.index');
 
 	}
 

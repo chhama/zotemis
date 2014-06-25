@@ -56,6 +56,7 @@ class SalesController extends \BaseController {
 			$sales->issued		= $issued[$key];
 			$sales->received	= $received[$key];
 			$sales->trans		= $trans[$key];
+			$sales->return 		= $return[$key];
 			$sales->sold		= $sold[$key];
 			$sales->demand		= $demand[$key];
 			$sales->sales_date	= $sales_date;
@@ -63,9 +64,7 @@ class SalesController extends \BaseController {
 		}
 
 		$products = Products::paginate();
-		return View::make('sales.create')->with(array(
-						'products'	=> $products
-					));
+		return Redirect::route('sales.create');
 	}
 
 
@@ -89,7 +88,11 @@ class SalesController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		//
+		$products = Sales::where('sales_date','=',$id)->paginate();
+		return View::make('sales.edit')->with(array(
+						'products'	=> $products,
+						'sales_date' => $id
+					));
 	}
 
 
@@ -101,7 +104,35 @@ class SalesController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		//
+		$sales_id	= Input::get('sales_id');
+		$products_id= Input::get('products_id');
+		$branches_id= Input::get('branches_id');
+		$prod_rate	= Input::get('prod_rate');
+		$ob			= Input::get('ob');
+		$issued		= Input::get('issued');
+		$received	= Input::get('received');
+		$trans		= Input::get('trans');
+		$return		= Input::get('return');
+		$sold		= Input::get('sold');
+		$demand		= Input::get('demand');
+		$sales_date	= Input::get('sales_date');
+		foreach ($sales_id as $key => $value) {
+			$sales = Sales::find($sales_id[$key]);
+			$sales->products_id = $products_id[$key];
+			$sales->branches_id = 1;//$branches_id[$key];
+			$sales->ob 			= $ob[$key];
+			$sales->issued		= $issued[$key];
+			$sales->received	= $received[$key];
+			$sales->trans		= $trans[$key];
+			$sales->return 		= $return[$key];
+			$sales->sold		= $sold[$key];
+			$sales->demand		= $demand[$key];
+			$sales->sales_date	= $sales_date;
+			$sales->save();
+		}
+
+		$products = Sales::where('sales_date','=',$id)->paginate();
+		return Redirect::route('sales.edit',array($id));
 	}
 
 
@@ -113,7 +144,9 @@ class SalesController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+		$delete = Sales::where('sales_date','=',$id);
+		$delete->delete();
+		return Redirect::route('sales.index');
 	}
 
 
