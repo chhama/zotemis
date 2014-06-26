@@ -9,12 +9,27 @@ class SalesController extends \BaseController {
 	 */
 	public function index()
 	{
-		$salesByDate = Sales::groupby('sales_date','branches_id')->paginate();
+		$salesByDate = Sales::groupby('sales_date','branches_id')->orderBy('sales_date','desc')->paginate();
 		return View::make('sales.index')->with(array(
 						'salesByDate'	=> $salesByDate
 					));
 	}
 
+	public function demandlist()
+	{
+		$salesByDate = Sales::groupby('sales_date','branches_id')->orderBy('sales_date','desc')->paginate();
+		return View::make('sales.demandlist')->with(array(
+						'salesByDate'	=> $salesByDate
+					));
+	}
+
+	public function demand($id){
+		$products = Sales::where('sales_date','=',$id)->paginate();
+		return View::make('sales.demand')->with(array(
+						'products'	=> $products,
+						'sales_date' => $id
+					));
+	}
 
 	/**
 	 * Show the form for creating a new resource.

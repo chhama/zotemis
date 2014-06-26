@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Gallery</title>
+<title>Zote MIS</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 {{ HTML::Style('css/bootstrap.min.css') }}
 {{ HTML::Script('js/jquery.js') }}
@@ -18,8 +18,9 @@
     	<div class="collapse navbar-collapse">
     		<ul class="nav navbar-nav">
           <li <?php  $exp = explode('/',Request::path()); if($exp[0] == 'branches'){ echo "class='active'"; } ?>><a href="{{ URL::route('branches.index')}}">Branches</a></li>
-          <li <?php  $exp = explode('/',Request::path()); if($exp[0] == 'products' || $exp[0] == 'products'){ echo "class='active'"; } ?>><a href="{{ URL::route('products.index')}}">Items</a></li>
-          <li <?php  $exp = explode('/',Request::path()); if($exp[0] == 'sales' || $exp[0] == 'sales'){ echo "class='active'"; } ?>><a href="{{ URL::route('sales.index')}}">Daily Sales</a></li>
+          <li <?php  $exp = explode('/',Request::path()); if($exp[0] == 'products'){ echo "class='active'"; } ?>><a href="{{ URL::route('products.index')}}">Items</a></li>
+          <li <?php  $exp = explode('/',Request::path()); if($exp[0] == 'sales'){ if(!isset($exp[1])) { echo "class='active'";} } ?>><a href="{{ URL::route('sales.index')}}">Daily Sales</a></li>
+          <li <?php  $exp = explode('/',Request::path()); if($exp[0] == 'sales'){ if(isset($exp[1]) && $exp[1] == 'demandlist') { echo "class='active'";} } ?>><a href="{{ URL::route('sales.demandlist')}}">Demand List</a></li>
     		</ul>
     	</div>
     </div>

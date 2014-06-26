@@ -18,4 +18,6 @@ Route::get('/', function()
 
 Route::resource('branches', 'BranchesController');
 Route::resource('products', 'ProductsController');
+Route::get('sales/demandlist', array('uses'=>'SalesController@demandlist','as'=>'sales.demandlist'));
+Route::get('sales/{id}/demand', array('uses'=>'SalesController@demand','as'=>'sales.demand'));
 Route::resource('sales', 'SalesController');
